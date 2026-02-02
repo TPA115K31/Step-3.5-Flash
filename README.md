@@ -117,12 +117,14 @@ To improve inference speed, we utilize a specialized MTP Head consisting of a sl
 You can get started with Step 3.5 Flash in minutes using Cloud API via our supported providers.
 
 ### 5.1 Get Your API Key
-Choose a provider and obtain your credentials. OpenRouter now offers free trial for Step 3.5 Flash.
+Sign up at [OpenRouter](https://openrouter.ai) or [platform.stepfun.ai](https://platform.stepfun.ai), and grab your API key. 
 
-| Provider | API Key Link | Base URL |
+> OpenRouter now offers free trial for Step 3.5 Flash.
+
+| Provider | Website | Base URL |
 | :--- | :--- | :--- |
-| OpenRouter | https://openrouter.ai/keys | https://openrouter.ai/api/v1 |
-| StepFun | https://platform.stepfun.ai/interface-key | https://api.stepfun.ai/v1 |
+| OpenRouter | https://openrouter.ai | https://openrouter.ai/api/v1 |
+| StepFun | https://platform.stepfun.ai | https://api.stepfun.ai/v1 |
 
 ### 5.2 Setup
 
