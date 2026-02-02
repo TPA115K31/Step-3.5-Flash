@@ -247,7 +247,7 @@ Step 3.5 Flash 优化本地推理，支持行业标准后端：vLLM、SGLang、H
    - bf16 模型：
      ```bash
      SGLANG_ENABLE_SPEC_V2=1
-     python3 -m sglang.launch_server \
+     sglang serve \
        --model-path <MODEL_PATH_OR_HF_ID> \
        --served-model-name step3p5-flash \
        --tp 8 \
@@ -264,7 +264,7 @@ Step 3.5 Flash 优化本地推理，支持行业标准后端：vLLM、SGLang、H
    - fp8 模型：
      ```bash
      SGLANG_ENABLE_SPEC_V2=1
-     python3 -m sglang.launch_server \
+     sglang serve \
        --model-path <MODEL_PATH_OR_HF_ID> \
        --served-model-name step3p5-flash \
        --tp 8 \
