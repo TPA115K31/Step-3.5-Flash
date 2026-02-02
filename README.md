@@ -383,7 +383,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Users in China can set up npm mirror
-config set registry https://registry.npmmirror.com
+npm config set registry https://registry.npmmirror.com
 
 # Step 2
 nvm install v22
@@ -520,7 +520,7 @@ preferred_auth_method = "apikey"
 # configure the provider
 [model_providers.stepfun-chat]
 name = "OpenAI using response"
-base_url = "https://api.stepfun.com/v1"
+base_url = "https://api.stepfun.ai/v1"
 env_key = "OPENAI_API_KEY"
 wire_api = "chat"
 query_params = {}

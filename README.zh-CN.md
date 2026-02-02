@@ -27,7 +27,7 @@ base_model:
 
 ## 1. 简介
 
-**Step 3.5 Flash** 是我们目前最强大的开源基座模型。它专为极致效率而生，具备前沿的推理能力和卓越的智能体（Agent）性能。该模型基于稀疏混合专家（MoE）架构，拥有 1960 亿参数，但处理每个 Token 时仅需选择性激活 110 亿参数。这种极高的“智能密度”使其推理深度足以媲美顶级闭源模型，同时兼顾了实时交互所需的敏捷响应速度。
+**Step 3.5 Flash** ([访问网站](https://static.stepfun.com/blog/step-3.5-flash/))是我们目前最强大的开源基座模型。它专为极致效率而生，具备前沿的推理能力和卓越的智能体（Agent）性能。该模型基于稀疏混合专家（MoE）架构，拥有 1960 亿参数，但处理每个 Token 时仅需选择性激活 110 亿参数。这种极高的“智能密度”使其推理深度足以媲美顶级闭源模型，同时兼顾了实时交互所需的敏捷响应速度。
 
 ### 目录
 - [核心能力](#2-核心能力)
@@ -36,7 +36,7 @@ base_model:
 - [快速上手](#5-快速上手)
 - [本地部署](#6-本地部署)
 - [Agent框架接入](#7-agent框架接入)
-- [功能限制、已知问题与未来方向](#8-已知问题与未来方向)
+- [已知问题与未来方向](#8-已知问题与未来方向)
 - [共创未来](#9-共创未来)
 - [License](#license)
 
@@ -150,7 +150,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://api.stepfun.ai/v1", # 或者 "https://openrouter.ai/api/v1"
+    base_url="https://api.stepfun.com/v1", # 或者 "https://openrouter.ai/api/v1"
     # 可选：OpenRouter 用于应用排名的 headers
     default_headers={
         "HTTP-Referer": "<YOUR_SITE_URL>", 
@@ -289,7 +289,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 MODEL_PATH = "<MODEL_PATH_OR_HF_ID>"
 
 # 1. 设置
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_PATH,
     trust_remote_code=True,
@@ -323,12 +323,11 @@ print(output_text)
 - 推荐：128GB 统一内存
 
 #### 步骤
-1. 克隆 llama.cpp 并切换到 step3.5 分支：
-   ```bash
-   git clone git@gitlab.basemind.com:edge-infra/workstation/llama.cpp.git
-   cd llama.cpp
-   git checkout feature/step3.5-flash
-   ```
+1. 使用[llama.cpp](llama.cpp/docs/step3.5-flash.md):
+    ```bash
+    git clone git@github.com:stepfun-ai/Step-3.5-Flash.git
+    cd Step-3.5-Flash/llama.cpp
+    ```
 2. Mac 上构建 llama.cpp：
    ```bash
    cmake -S . -B build-macos \
@@ -372,13 +371,13 @@ print(output_text)
 ## 7. Agent框架接入
 
 ### 7.1 Claude Code和Codex接入
-大部分情况下编程工具都可以很方便的接入Step 3.5 Flash模型使用，这里我们主要准备了Claude code、Codex工具接入使用教程。
+大部分情况下编程工具都可以很方便的接入Step 3.5 Flash模型使用，这里我们主要准备了Claude Code、Codex工具接入使用教程。
 
 #### 7.1.1 配置准备
-按前面准备工作注册阶跃星辰开发者账号并申请内测名额，获取API Key。
+按前面准备工作注册阶跃星辰开放平台或者OpenRouter账号，获取API Key。
 
 #### 7.1.2 环境准备
-Claude code和Codex工具运行均依赖node环境，因此首先需要安装node环境，建议node版本在v20以上，可通过nvm工具安装管理node。
+Claude Code和Codex工具运行均依赖Node.js环境，因此首先需要安装Node.js环境，建议Node.js版本在v20以上，可通过nvm工具安装管理Node.js版本。
 
 **Mac/Linux环境安装**：
 ```bash
@@ -392,12 +391,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # 中国用户可以设置 npm 镜像源 
-config set registry https://registry.npmmirror.com
+npm config set registry https://registry.npmmirror.com
 
 # 步骤2
 nvm install v22
 
-# 检查 Node.js 是否安装成功node
+# 检查 Node.js 是否安装成功
 node --version
 
 npm --version
@@ -468,10 +467,10 @@ npm --version
 
    **方式二：Openai API协议使用**
 
-   这里Openai API协议指`chat/completions`。
-   通过Openai API使用时我们推荐使用ccr的方式，详细使用可以参考这里 [https://github.com/musistudio/claude-code-router](https://github.com/musistudio/claude-code-router)。
+   > 这里Openai API协议指`chat/completions`。
+   > 通过Openai API使用时我们推荐使用ccr的方式，详细使用可以参考这里 [https://github.com/musistudio/claude-code-router](https://github.com/musistudio/claude-code-router)。
    
-   需要先参考下面命令安装claude-code-router，注意，请确保已安装了Claude Code。
+   参考下面命令安装claude-code-router，注意，请确保已安装了Claude Code。
 
    ```bash
    # 通过npm安装ccr
