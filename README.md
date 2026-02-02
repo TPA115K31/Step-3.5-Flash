@@ -234,7 +234,7 @@ pip install "sglang[all] @ git+https://github.com/sgl-project/sglang.git"
   - For bf16 model
 ```
 SGLANG_ENABLE_SPEC_V2=1
-python3 -m sglang.launch_server \
+sglang serve \
   --model-path <MODEL_PATH_OR_HF_ID> \
   --served-model-name step3p5-flash \
   --tp-size 8 \
@@ -251,7 +251,7 @@ python3 -m sglang.launch_server \
   - For fp8 model
 ```bash
 SGLANG_ENABLE_SPEC_V2=1
-python3 -m sglang.launch_server \
+sglang serve \
   --model-path <MODEL_PATH_OR_HF_ID> \
   --served-model-name step3p5-flash \
   --tp-size 8 \
