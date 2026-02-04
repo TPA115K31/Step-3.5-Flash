@@ -18,7 +18,14 @@ We welcome contributions! If you've built something cool with Step 3.5 Fast, ple
 4.  **Write Documentation**: Create a `README.md` inside your directory explaining what the cookbook does and how to run it.
 5.  **Submit a Pull Request**: Push your changes to a branch and open a PR against the main repository.
 
-## 🏗 Basic Structure for a Cookbook
+## � Call for Contributions
+
+We deeply value our community's creativity! If your cookbook is accepted and merged, we'd love to send you a small gift as a token of our appreciation.
+
+*   **Contact Us**: Please email us at [developer@stepfun.com](mailto:developer@stepfun.com).
+*   **Include**: A link to your merged PR and your mailing address so we can ship your gift!
+
+## �🏗 Basic Structure for a Cookbook
 
 To ensure consistency, please follow this standard directory structure:
 
