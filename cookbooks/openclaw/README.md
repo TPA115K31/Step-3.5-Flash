@@ -77,7 +77,7 @@ You can configure the model via the **WebUI** (Recommended) or by editing the **
     *   Scroll to the **Models** section and click **Add**.
     *   **ID:** `step-3.5-flash`.
     *   **Name:** `Step 3.5 Flash`.
-    *   **Context Window:** `256000` (Recommend setting high context).
+    *   **Context Window:** `256000` (This is the maxium context window size for Step 3.5 Flash).
     ![Add Model](assets/(null)-20260205105937340.(null))
 
 4.  **Set as Primary:**
