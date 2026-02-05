@@ -2,12 +2,12 @@
 
 A concise guide for installing, configuring, and deploying OpenClaw on MacOS with **Step 3.5 Flash**.
 
-## 📋 Prerequisites
+## Prerequisites
 
 - **OS:** MacOS (Apple Silicon/Intel)
 - **Runtime:** Node.js (optional, if using npm)
 
-## 🚀 Installation
+## Installation
 
 Choose one of the following methods to install OpenClaw:
 
@@ -22,7 +22,7 @@ npm i -g openclaw
 # If you encounter permission errors, use sudo
 ```
 
-## ⚡ Quick Start: Onboarding
+## Quick Start: Onboarding
 
 Initialize your agent using the setup wizard.
 
@@ -56,7 +56,7 @@ Initialize your agent using the setup wizard.
     openclaw dashboard
     ```
 
-## ⚙️ Configuring Step 3.5 Flash
+## Configuring Step 3.5 Flash
 
 You can configure the model via the **WebUI** (Recommended) or by editing the **JSON config**.
 
@@ -124,14 +124,14 @@ Edit `~/.openclaw/openclaw.json` directly.
 ```
 </details>
 
-## 🔌 Integrations (Optional)
+## Integrations (Optional)
 
 ### Telegram Bot
 1. **Create Bot:** Chat with [BotFather](https://t.me/botfather), run `/newbot` to get a **Token**.
 2. **Get User ID:** Chat with [userinfobot](https://t.me/userinfobot) to get your **ID**.
 3. **Configure:** In `openclaw onboard` (or GUI), input the Token and ID.
 
-## 🛠 Command Reference
+## Command Reference
 
 | Command | Description |
 | :--- | :--- |
@@ -140,7 +140,7 @@ Edit `~/.openclaw/openclaw.json` directly.
 | `openclaw gateway` | Start background service (Telegram/WhatsApp). |
 | `openclaw gui` | Open native desktop app. |
 
-## ❓ Troubleshooting
+## Troubleshooting
 
 **WebUI Won't Open**
 Run `openclaw onboard` again to ensure the gateway is initialized correctly.
