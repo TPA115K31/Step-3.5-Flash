@@ -8,7 +8,21 @@ A cookbook is a self-contained project, integration guide, or example that demon
 
 Whether it's a simple API integration, a guide on connecting with frameworks like LangChain/LlamaIndex, a complex reasoning agent, or a data processing pipeline, cookbooks are designed to be hands-on and easy to follow. We encourage you to add **Integration Guides** here as well, as they serve as excellent "recipes" for developers connecting Step 3.5 Flash with their existing tools.
 
-## 🚀 How to Add a Cookbook
+## � Available Cookbooks
+
+Here are the currently available cookbooks and integration guides:
+
+- **[Hybrid Local Agent on MacOS](./hybrid-local-agent-macos)**  
+  Build a fully local, privacy-first Agentic Sandbox on MacOS. This example uses a hybrid architecture with **Step 3.5 Flash** as the "Brain" for complex reasoning and **Qwen 2.5 Coder** as a local "Janitor" for high-volume tasks.
+
+- **[OpenClaw Integration](./openclaw)**  
+  A comprehensive guide for installing, configuring, and deploying **OpenClaw** on MacOS. Learn how to set up the agent platform and integrate it efficiently.
+
+- **[Roo Code Integration](./roo-code-integration-guide)**  
+  A tutorial on configuring **Step 3.5 Flash** as the backend for **Roo Code** (VS Code extension). Combine the reasoning power of Flash with Roo Code's autonomous capabilities for a powerful pair-programming experience.
+
+
+## �🚀 How to Add a Cookbook
 
 We welcome contributions! If you've built something cool with Step 3.5 Flash, please share it with the community.
 
