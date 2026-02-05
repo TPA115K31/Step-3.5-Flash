@@ -2,7 +2,7 @@
 
 ## 📖 概述
 
-本文档提供了将 Claude Code 与 Step 3.5 Flash 结合使用的完整指南和最佳实践。通过配置 MCP 服务、Skills 插件和 Sub-agents，您可以显著提升 AI Agent 的开发效率和智能化水平。
+本文档提供了将 Claude Code 与 Step 3.5 Flash 结合使用的完整指南和最佳实践。通过编写高效的 CLAUDE.md 配置、配置 MCP 服务、Skills 插件和 Sub-agents，您可以显著提升 AI Agent 的开发效率和智能化水平。
 
 **适用对象**：
 - 使用 Claude Code 进行开发的软件工程师
@@ -11,6 +11,7 @@
 
 **您将学到**：
 - 如何配置 Claude Code 接入 Step 3.5 Flash
+- 如何编写高效的 CLAUDE.md 配置文件
 - MCP、Skills、Sub-agents 的实际应用场景
 - 提升开发效率的实用技巧
 
@@ -64,7 +65,185 @@ which uvx
 
 ## 2. 最佳实践
 
-### 2.1 MCP (Model Context Protocol) 集成
+### 2.1 CLAUDE.md 配置文件
+
+CLAUDE.md 是 Claude Code 的核心配置文件，Claude 在每次对话开始时都会自动读取它。通过编写有效的 CLAUDE.md，您可以为 Claude 提供**无法仅从代码推断出的持久上下文**，显著提升协作效率。
+
+#### 快速生成
+
+使用 `/init` 命令可以根据当前项目结构自动生成初始的 CLAUDE.md 文件：
+
+```bash
+# 在 Claude Code 中执行
+/init
+```
+
+该命令会分析您的代码库，检测构建系统、测试框架和代码模式，生成一个良好的起点供您进一步完善。
+
+#### 应该包含的内容 ✅
+
+| 类型 | 示例 |
+|------|------|
+| **Claude 无法猜到的 Bash 命令** | 特殊的构建命令、自定义脚本路径 |
+| **与默认不同的代码风格规则** | 使用 ES modules 而非 CommonJS |
+| **测试说明和首选测试运行器** | 优先运行单个测试而非整个测试套件 |
+| **仓库规范** | 分支命名约定、PR 格式要求 |
+| **项目特定的架构决策** | 数据流模式、模块边界 |
+| **开发环境特殊配置** | 必需的环境变量、本地依赖 |
+| **常见陷阱或非显而易见的行为** | 已知的 bug 规避方法 |
+
+#### 应该避免的内容 ❌
+
+| 类型 | 原因 |
+|------|------|
+| Claude 可以通过阅读代码理解的内容 | 冗余信息会稀释重要指令 |
+| 标准语言惯例 | Claude 已经知道这些 |
+| 详细的 API 文档 | 改为提供链接 |
+| 经常变化的信息 | 维护成本高，容易过时 |
+| 长篇解释或教程 | 会占用上下文窗口 |
+| 文件逐个描述 | Claude 可以自己读取 |
+| 不言自明的做法（如"写干净的代码"） | 没有实际指导意义 |
+
+#### 示例模板
+
+```markdown
+# Code Style
+- Use ES modules (import/export) syntax, not CommonJS (require)
+- Destructure imports when possible (e.g., import { foo } from 'bar')
+- Use TypeScript strict mode
+
+# Workflow
+- Be sure to typecheck when you're done making a series of code changes
+- Prefer running single tests, and not the whole test suite, for performance
+- IMPORTANT: Always run `pnpm lint` before committing
+
+# Project Conventions
+- API routes follow RESTful conventions
+- Use kebab-case for URL paths, camelCase for JSON properties
+- Database migrations must be backward compatible
+
+# Testing
+- Test command: `pnpm test`
+- Single test: `pnpm test -- --grep "test name"`
+- Integration tests require Docker: `docker-compose up -d`
+
+# Common Issues
+- If build fails with memory error, increase Node memory: `NODE_OPTIONS=--max-old-space-size=4096`
+```
+
+#### 文件放置位置
+
+CLAUDE.md 可以放置在多个位置，根据作用范围选择：
+
+| 位置 | 作用范围 | 使用场景 |
+|------|---------|---------|
+| `~/.claude/CLAUDE.md` | 所有 Claude 会话 | 个人全局偏好设置 |
+| `./CLAUDE.md` | 当前项目 | 团队共享配置（提交到 git） |
+| `./CLAUDE.local.md` | 当前项目（本地） | 个人项目配置（加入 .gitignore） |
+| 父目录 | Monorepo 场景 | `root/CLAUDE.md` 和 `root/packages/foo/CLAUDE.md` 都会被加载 |
+| 子目录 | 按需加载 | 处理特定目录文件时自动加载 |
+
+#### 导入其他文件
+
+使用 `@path/to/import` 语法可以引用其他文件内容：
+
+```markdown
+See @README.md for project overview and @package.json for available npm commands.
+
+# Additional Instructions
+- Git workflow: @docs/git-instructions.md
+- API conventions: @docs/api-conventions.md
+- Personal overrides: @~/.claude/my-project-instructions.md
+```
+
+#### 维护最佳实践
+
+1. **保持简洁**：对每一行问自己——"删除这行会导致 Claude 犯错吗？"如果不会，删掉它
+
+2. **使用强调词**：对于关键规则，可以添加 `IMPORTANT` 或 `YOU MUST` 来提高遵守度
+   ```markdown
+   IMPORTANT: Never commit directly to main branch
+   YOU MUST run tests before pushing
+   ```
+
+3. **定期修剪**：膨胀的 CLAUDE.md 会导致 Claude 忽略实际指令。如果 Claude 反复违反某条规则，可能是文件太长导致规则被淹没
+
+4. **版本控制**：将 CLAUDE.md 提交到 git，让团队成员可以贡献和改进
+
+5. **观察并迭代**：像对待代码一样对待它——出问题时检查、定期修剪、通过观察 Claude 行为是否改变来测试更改
+
+> **提示**：对于仅在特定场景下需要的领域知识或工作流，考虑使用 [Skills](#23-skills-插件系统) 替代。Claude 会按需加载 Skills，不会在每次对话时都占用上下文。
+
+#### 常见反模式与实战技巧
+
+以下是来自大型 Monorepo 实际使用的经验总结：
+
+**1. 先设限制，而不是写指南**
+
+不要一开始就试图写一本面面俱到的手册。CLAUDE.md 应当从小处着手，根据 Claude **实际犯的错误**来逐步添加规则。每次 Claude 做错了什么，再补上对应的约束，这样每条规则都有存在的理由。
+
+**2. 谨慎使用 `@` 引用文档**
+
+不要在 CLAUDE.md 中到处用 `@` 引用其他文件——这会在每次运行时把整份被引用文件塞进上下文窗口，导致臃肿。但如果你只是在文中提到路径，Claude 通常又会忽略它。正确做法是向 Agent **推销"为什么"和"什么时候"需要读这份文件**：
+
+```markdown
+# ❌ 不推荐 - 盲目引用，每次都加载
+@docs/foo-tool-guide.md
+
+# ❌ 不推荐 - 只写路径，Claude 可能忽略
+参见 docs/foo-tool-guide.md
+
+# ✅ 推荐 - 说明触发条件和价值
+遇到复杂用法或碰到 FooBarError 时，请参见 docs/foo-tool-guide.md 获取最佳问题排查步骤。
+```
+
+**3. 不要只说"禁止"，要提供替代方案**
+
+纯粹的负面约束（如"绝对不要使用 `--foo-bar` 标志"）会让 Agent 在认为必须使用该标志时陷入"左右脑互博"而卡住。永远要提供可行的替代方案：
+
+```markdown
+# ❌ 不推荐
+绝对不要使用 --force 标志
+
+# ✅ 推荐
+禁止使用 --force，优先使用 --force-with-lease 来安全地强制推送
+```
+
+**4. 用 CLAUDE.md 倒逼工具简化**
+
+如果你的 CLI 命令复杂又冗长，与其在 CLAUDE.md 里写长篇大论解释它们，不如写一个简单的 bash 包装器提供清晰直观的 API，然后在 CLAUDE.md 中记录这个包装器。保持 CLAUDE.md 尽可能短，也是迫使你精简代码库和内部工具的绝佳手段。
+
+#### 团队协作与 Monorepo 实践
+
+在大型团队或 Monorepo 中，CLAUDE.md 需要更严格的管理策略：
+
+- **控制范围**：根目录的 CLAUDE.md 只记录大多数（约 30%+）工程师会用到的通用工具和 API，其余工具放在对应产品或库目录的专属 Markdown 文件中
+- **设置 Token 预算**：考虑为每个工具的文档分配最大 token 数。如果你不能简明扼要地解释一个工具，那它还没准备好被放进 CLAUDE.md
+- **多 AI 工具兼容**：如果团队同时使用多种 AI IDE，可以将 CLAUDE.md 与 AGENTS.md 等文件保持同步，确保跨工具一致性
+
+**Monorepo CLAUDE.md 结构参考**：
+
+```markdown
+# Monorepo
+
+## Python
+- 总是使用 poetry 管理依赖
+- 使用 `make test <package>` 进行测试
+- 类型注解必须通过 mypy strict 模式检查
+
+## <内部 CLI 工具>
+- <使用示例>
+- 总是使用 --verbose 获取调试日志
+- 禁止 <x>，优先使用 <y>
+
+对于 <复杂用法> 或 <FooBarError>，请参阅 path/to/<tool>_docs.md
+```
+
+
+
+---
+
+### 2.2 MCP (Model Context Protocol) 集成
 
 MCP 允许 Claude Code 连接外部工具和数据源，扩展其能力边界。
 
@@ -98,7 +277,7 @@ Claude Code 将自动获取指定仓库的最新文档内容，提供准确且�
 
 ---
 
-### 2.2 Skills 插件系统
+### 2.3 Skills 插件系统
 
 Skills 是 Claude Code 的扩展能力模块，可以为特定任务提供专业化支持。
 
@@ -239,7 +418,7 @@ Skills 是 Claude Code 的扩展能力模块，可以为特定任务提供专业
 
 ---
 
-### 2.3 Sub-agents 并行工作流
+### 2.4 Sub-agents 并行工作流
 
 **解决的问题**：
 在处理复杂任务时，主 Agent 的上下文窗口可能被大量细节占用。使用 Sub-agents 可以将非核心任务委派给专门的子代理，保持主 Agent 的上下文清晰，同时利用 Step 3.5 Flash 的高速执行能力实现并行处理。
